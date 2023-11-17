@@ -3,7 +3,7 @@ name: gmp-compile
 on:
   push:
     branches:
-      - '*gmp*'
+      - '*'
 jobs:
   buildme:
     permissions:
