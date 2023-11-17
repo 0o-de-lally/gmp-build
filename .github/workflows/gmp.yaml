@@ -25,7 +25,7 @@ jobs:
       #   with:
       #     detached: true
       - name: osx deps
-        if: matrix.config.os == 'macos-*'
+        if: matrix.config.os == 'macos-latest-xlarge'
         run: brew install autoconf automake libtool
 
       - name: vcpkg build
@@ -40,20 +40,20 @@ jobs:
 
       - name: upload mac
         uses: actions/upload-artifact@v3
-        if: matrix.config.os == 'macos-*'
+        if: matrix.config.os == 'macos-latest-xlarge'
         with:
           name: gmp-compile
           path: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*/
 
-      - name: upload windows
-        uses: actions/upload-artifact@v3
-        if: matrix.config.os == 'windows-2019'
-        with:
-          name: gmp-compile
-          path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
+      # - name: upload windows
+      #   uses: actions/upload-artifact@v3
+      #   if: matrix.config.os == 'windows-2019'
+      #   with:
+      #     name: gmp-compile
+      #     path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
 
       - name: release mac
-        if: matrix.config.os == 'macos-*'
+        if: matrix.config.os == 'macos-latest-xlarge'
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
@@ -62,13 +62,13 @@ jobs:
           body: "gmp libs built from source"
           artifacts: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.dylib, ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.a
 
-      - name: release win
-        if: matrix.config.os == 'windows-2019'
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          tag: gmp-libraries-${{ matrix.config.os }}
-          commit: ${{github.ref}}
-          body: "gmp libs built from source"
-          artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.lib,  ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.dll
+      # - name: release win
+      #   if: matrix.config.os == 'windows-2019'
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     allowUpdates: true
+      #     tag: gmp-libraries-${{ matrix.config.os }}
+      #     commit: ${{github.ref}}
+      #     body: "gmp libs built from source"
+      #     artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.lib,  ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.dll
 
